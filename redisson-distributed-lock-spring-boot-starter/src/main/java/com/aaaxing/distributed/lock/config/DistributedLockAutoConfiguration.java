@@ -5,8 +5,7 @@ import com.aaaxing.distributed.lock.aspect.DistributedLockAspect;
 import com.aaaxing.distributed.lock.converter.DefaultLockNamePreConverter;
 import com.aaaxing.distributed.lock.converter.LockNameCoreConverter;
 import com.aaaxing.distributed.lock.converter.LockNamePreConverter;
-import com.aaaxing.distributed.lock.utils.DistributedLocks;
-import org.redisson.api.RedissonClient;
+import com.aaaxing.distributed.lock.initializer.DistributedLocksInitializer;
 import org.redisson.spring.starter.RedissonAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -31,9 +30,9 @@ public class DistributedLockAutoConfiguration {
     }
 
     @Bean
-    public LockNameCoreConverter lockNameCoreConverter(DistributedLockProperties properties,
+    public LockNameCoreConverter lockNameCoreConverter(DistributedLockProperties distributedLockProperties,
                                                        LockNamePreConverter lockNamePreConverter) {
-        return new LockNameCoreConverter(properties, lockNamePreConverter);
+        return new LockNameCoreConverter(distributedLockProperties, lockNamePreConverter);
     }
 
     @Bean
@@ -42,10 +41,7 @@ public class DistributedLockAutoConfiguration {
     }
 
     @Bean
-    public DistributedLocks distributedLocks(DistributedLockProperties distributedLockProperties,
-                                             RedissonClient redisson) {
-        DistributedLocks.setRedisson(redisson);
-        DistributedLocks.setPrefix(distributedLockProperties.getPrefix());
-        return new DistributedLocks();
+    public DistributedLocksInitializer distributedLocksInitializer() {
+        return new DistributedLocksInitializer();
     }
 }
