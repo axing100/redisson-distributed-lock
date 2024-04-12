@@ -7,14 +7,45 @@
     <groupId>com.aaaxing</groupId>
     <artifactId>redisson-distributed-lock-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <modules>
         <module>redisson-distributed-lock-spring-boot-starter</module>
         <module>redisson-distributed-lock-example</module>
     </modules>
 
+    <description>
+        通过`@DistributedLock`注解（支持占位符）或DistributedLocks工具类使用分布式锁，支持可重入锁、公平锁、读写锁。
+        Use distributed locks through the `@DistributedLock` annotation (supports placeholders) or the DistributedLocks tool class to support reentrant locks, fair locks, and read-write locks.
+    </description>
+    <url>https://github.com/axing100/redisson-distributed-lock</url>
+    <scm>
+        <url>https://github.com/axing100/redisson-distributed-lock</url>
+        <connection>scm:git:https://github.com/axing100/redisson-distributed-lock.git</connection>
+        <developerConnection>scm:git:https://github.com/axing100/redisson-distributed-lock.git</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <id>axing100</id>
+            <name>axing</name>
+            <email>jasonchen100@foxmail.com</email>
+            <url>https://github.com/axing100</url>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
     <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.2.2.RELEASE</spring-boot.version>
     </properties>
 
@@ -30,4 +61,72 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <plugins>
+            <!-- Source -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Gpg Signature -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.4.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <tokenAuth>true</tokenAuth>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <distributionManagement>
+        <snapshotRepository>
+            <!-- 与settings.xml的server.id保持一致 -->
+            <id>central</id>
+            <url>https://central.sonatype.com/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

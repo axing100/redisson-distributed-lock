@@ -53,7 +53,7 @@ public class LockNameCoreConverter {
             Objects.requireNonNull(lockName);
         } catch (Exception e) {
             throw new DistributedLockException(2, "An exception occurred while pre convert lock name, " +
-                    "please check the CustomLockNamePreConverter.preConvertLockKey method.", e.getCause());
+                    "please check the LockNamePreConverter.preConvertLockName method.", e.getCause());
         }
 
         try {

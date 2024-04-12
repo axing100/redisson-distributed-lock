@@ -1,3 +1,4 @@
+// Copyright 2024 axing
 package com.aaaxing.distributed.lock.initializer;
 
 import com.aaaxing.distributed.lock.config.DistributedLockProperties;

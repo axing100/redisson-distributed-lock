@@ -56,14 +56,14 @@ public class DistributedLockAspect {
             throw new DistributedLockException(1, "Required Redisson dependency for distributed lock was not found.");
         }
 
-        String lockKey = lockNameCoreConverter.convertLockName(annotation.name(), joinPoint);
+        String lockName = lockNameCoreConverter.convertLockName(annotation.name(), joinPoint);
 
-        lock(lockKey, annotation);
+        lock(lockName, annotation);
         Object proceed;
         try {
             proceed = joinPoint.proceed();
         } finally {
-            unlock(lockKey, annotation);
+            unlock(lockName, annotation);
         }
 
         if (LOGGER.isDebugEnabled()) {
@@ -100,10 +100,10 @@ public class DistributedLockAspect {
     /**
      * 加锁
      *
-     * @param lockKey 锁key
+     * @param lockName 锁名
      * @param annotation 锁注解
      */
-    private void lock(String lockKey, DistributedLock annotation) {
+    private void lock(String lockName, DistributedLock annotation) {
         Type type = annotation.type();
         Mode mode = annotation.mode();
         long leaseTime = annotation.leaseTime();
@@ -115,7 +115,7 @@ public class DistributedLockAspect {
 
             if (Type.LOCK.equals(type)) {
 
-                RLock lock = redisson.getLock(lockKey);
+                RLock lock = redisson.getLock(lockName);
 
                 if (Mode.LOCK.equals(mode)) {
                     lock.lock(leaseTime, timeUnit);
@@ -126,7 +126,7 @@ public class DistributedLockAspect {
 
             } else if (Type.FAIR_LOCK.equals(type)) {
 
-                RLock fairLock = redisson.getFairLock(lockKey);
+                RLock fairLock = redisson.getFairLock(lockName);
 
                 if (Mode.LOCK.equals(mode)) {
                     fairLock.lock(leaseTime, timeUnit);
@@ -137,7 +137,7 @@ public class DistributedLockAspect {
 
             } else if (Type.READ_LOCK.equals(type)) {
 
-                RReadWriteLock lock = redisson.getReadWriteLock(lockKey);
+                RReadWriteLock lock = redisson.getReadWriteLock(lockName);
                 RLock readLock = lock.readLock();
 
                 if (Mode.LOCK.equals(mode)) {
@@ -149,7 +149,7 @@ public class DistributedLockAspect {
 
             } else if (Type.WRITE_LOCK.equals(type)) {
 
-                RReadWriteLock lock = redisson.getReadWriteLock(lockKey);
+                RReadWriteLock lock = redisson.getReadWriteLock(lockName);
                 RLock writeLock = lock.writeLock();
 
                 if (Mode.LOCK.equals(mode)) {
@@ -168,17 +168,17 @@ public class DistributedLockAspect {
         }
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Lock succeed, {}-{}-{}", type, mode, lockKey);
+            LOGGER.debug("Lock succeed, {}-{}-{}", type, mode, lockName);
         }
     }
 
     /**
      * 释放锁
      *
-     * @param lockKey 锁key
+     * @param lockName 锁名
      * @param annotation 锁注解
      */
-    private void unlock(String lockKey, DistributedLock annotation) {
+    private void unlock(String lockName, DistributedLock annotation) {
         Type type = annotation.type();
         Mode mode = annotation.mode();
         boolean unlock = annotation.autoUnlock();
@@ -187,16 +187,16 @@ public class DistributedLockAspect {
 
             if (unlock) {
                 if (Type.LOCK.equals(type)) {
-                    RLock lock = redisson.getLock(lockKey);
+                    RLock lock = redisson.getLock(lockName);
                     lock.unlock();
                 } else if (Type.FAIR_LOCK.equals(type)) {
-                    RLock fairLock = redisson.getFairLock(lockKey);
+                    RLock fairLock = redisson.getFairLock(lockName);
                     fairLock.unlock();
                 } else if (Type.READ_LOCK.equals(type)) {
-                    RReadWriteLock lock = redisson.getReadWriteLock(lockKey);
+                    RReadWriteLock lock = redisson.getReadWriteLock(lockName);
                     lock.readLock().unlock();
                 } else if (Type.WRITE_LOCK.equals(type)) {
-                    RReadWriteLock lock = redisson.getReadWriteLock(lockKey);
+                    RReadWriteLock lock = redisson.getReadWriteLock(lockName);
                     lock.writeLock().unlock();
                 }
             }
@@ -206,7 +206,7 @@ public class DistributedLockAspect {
         }
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Unlock succeed, {}-{}-{}", type, mode, lockKey);
+            LOGGER.debug("Unlock succeed, {}-{}-{}", type, mode, lockName);
         }
     }
 

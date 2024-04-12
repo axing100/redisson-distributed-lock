@@ -5,7 +5,7 @@
     <parent>
         <artifactId>redisson-distributed-lock-parent</artifactId>
         <groupId>com.aaaxing</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.aaaxing</groupId>
             <artifactId>redisson-distributed-lock-spring-boot-starter</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

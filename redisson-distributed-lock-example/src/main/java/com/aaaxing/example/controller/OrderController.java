@@ -89,7 +89,15 @@ public class OrderController {
         return result;
     }
 
-
+    /**
+     * 测试自定义锁名预转换器逻辑
+     */
+    @GetMapping("/custom")
+    @DistributedLock(name = "custom:{@ip}", mode = Mode.TRY_LOCK, leaseTime = 1,
+            autoUnlock = false, tryLockFailMsg = "请求过于频繁~请稍后再试")
+    public String custom() {
+        return "success";
+    }
 
     /**
      * 工具类方式使用分布式锁

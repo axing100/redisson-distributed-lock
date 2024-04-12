@@ -7,10 +7,7 @@ import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.core.annotation.AliasFor;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
 /**
  * 分布式锁注解
@@ -20,15 +17,16 @@ import java.util.concurrent.TimeUnit;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface DistributedLock {
     /**
      * 锁名称
      * <p>
-     *     1.可用{filed}占位符替换参数值，如{id}将会被替换为方法参数列表中名为id的参数值。                              <br/>
-     *     2.使用“.”标记多层级，如{user.address.id}将会被替换为方法参数列表中名为user对象的address字段对象的id字段值。   <br/>
-     *     3.若为2层级，且参数列表只有一个对象时，可以省略第1层级，如{user.id}可以简写为{id}。                           <br/>
-     *     4.在{}中使用@userId替换当前登录用户userId（需要自定义过滤器注入）。                                             <br/>
-     *     5.自动添加“lock:”前缀。                                                                                  <br/>
+     *     <br/>1.可用{filed}占位符替换参数值，如{id}将会被替换为方法参数列表中名为id的参数值。
+     *     <br/>2.使用“.”标记多层级，如{user.address.id}将会被替换为方法参数列表中名为user对象的address字段对象的id字段值。
+     *     <br/>3.若为2层级，且参数列表只有一个对象时，可以省略第1层级，如{user.id}可以简写为{id}。
+     *     <br/>4.在{}中使用@userId替换当前登录用户userId（过滤器自行注入），可实现LockNamePreConverter接口自定义逻辑。
+     *     <br/>5.默认添加“lock:”前缀，可通过application.properties配置：distributed-lock.prefix=lock:
      * </p>
      */
     @AliasFor("value")
