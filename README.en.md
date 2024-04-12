@@ -1,7 +1,8 @@
-# redisson-distributed-lock-boot-starter
+# redisson-distributed-lock
 
 #### Description
-通过给方法添加@DistributedLock注解来非常方便的使用redisson分布式锁，锁名支持占位符替换任意层级方法入参字段值，支持可重入锁、公平锁、读写锁。
+1. It is very convenient to use distributed locks by adding the @DistributedLock annotation to the method. The lock name supports placeholders to replace the parameter field values in any level method, and supports reentrant locks, fair locks, and read-write locks.
+2. Distributed locks are used through the DistributedLocks tool class, which also supports reentrant locks, fair locks, and read-write locks.
 
 #### Software Architecture
 Software architecture description
@@ -24,13 +25,3 @@ Software architecture description
 2.  Create Feat_xxx branch
 3.  Commit your code
 4.  Create Pull Request
-
-
-#### Gitee Feature
-
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
